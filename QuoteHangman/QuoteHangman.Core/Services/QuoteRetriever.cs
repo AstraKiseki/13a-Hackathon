@@ -26,7 +26,7 @@ namespace QuoteHangman.Core.Services
 
             // 3. Add headers to this HTTP request
             httpRequest.Headers.Add("X-Mashape-Key", "jQArMkfUYHmshyITmscItwo5lSGYp1Qkk94jsnRge8Ucy5Ai4q");
-            httpRequest.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+            httpRequest.ContentType = "application/x-www-form-urlencoded";
             httpRequest.Accept = "application/json";
 
             // 4. Get our response
@@ -57,7 +57,7 @@ namespace QuoteHangman.Core.Services
 
             // 3. Add headers to this HTTP request
             httpRequest.Headers.Add("X-Mashape-Key", "jQArMkfUYHmshyITmscItwo5lSGYp1Qkk94jsnRge8Ucy5Ai4q");
-            httpRequest.Headers.Add("Content-Type", "application/x-www-form-urlencoded");
+            httpRequest.ContentType="application/x-www-form-urlencoded";
             httpRequest.Accept = "application/json";
 
             // 4. Get our response

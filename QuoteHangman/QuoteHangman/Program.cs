@@ -7,81 +7,111 @@ using QuoteHangman.Core.Services;
 
 namespace QuoteHangman
 {
-    public class Program
+        public class Program
     {
         static int lives = 9;
         static string QuoteAnswer = " ";
         static string DisplayWord = " ";
+        static bool gameOver = true;
+        static List<string> usedLetters = new List<string>();
 
         static void Main(string[] args)
         {
+            GameStart();
             
+            while (lives >= 0)
+            {
+                while (gameOver == true)
+                {
+                    PlayRound();
+                    if (DisplayWord.Equals(QuoteAnswer, StringComparison.OrdinalIgnoreCase))
+                {
+                    gameOver = false;
+                    if (lives > 0)
+                    {
+                            Console.WriteLine(QuoteAnswer);
+                        Console.WriteLine("Congratulations, you win!");
+                            Console.WriteLine("Would you like to play again? (Y/N)");
+                            string playAgain = Console.ReadLine();
+                            playAgain = playAgain.ToUpper();
+                            bool playAgainChoice = false;
+
+                            while (playAgainChoice == false)
+                            {
+                                switch (playAgain)
+                                {
+                                    case "Y":
+                                        playAgainChoice = true;
+                                        Console.Clear();
+                                        GameStart();
+                                        break;
+                                    case "N":
+                                        playAgainChoice = true;
+                                        Console.WriteLine("Cool!  Thanks for playing!");
+                                        Console.ReadLine();
+                                        Environment.Exit(0);
+                                        break;
+                                    default:
+                                        Console.WriteLine("Sorry, that's not a valid answer.  Please try again.");
+                                        playAgain = Console.ReadLine();
+                                        playAgain = playAgain.ToUpper();
+                                        break;
+                                }
+                            }
+                    }
+                }
+                if (lives == 0)
+                {
+                    Console.WriteLine("Oh, you are out of lives!  That's game over!");
+                    Console.WriteLine("The answer was {0}", QuoteAnswer);
+                    Console.ReadLine();
+                        Console.Clear();
+                        GameStart();
+                }
+
+                }
+            }
+        }
+
+        public static void GameStart()
+        {
             Console.WriteLine("Hi!  Welcome to Hangman!");
             Console.WriteLine("This game uses currently uses one of two options to choose a quote to guess!  Would you like the quote to be from:");
             Console.WriteLine("1. Movies");
             Console.WriteLine("2. Someone famous");
 
             string choice = Console.ReadLine();
+            bool pickedChoice = false;
 
-            switch (choice)
+            while (pickedChoice == false)
             {
-                case "1":
-                    /// Movies game
-                    Console.WriteLine("You've chosen a quote from a movie!  One moment, please!");
-                    QuoteAnswer = QuoteRetriever.GetMovieQuote().quote;
-                    break;
-                case "2":
-                    /// Famous
-                    Console.WriteLine("You've chosen someone famous!  One moment, please!");
-                    QuoteAnswer = QuoteRetriever.GetFamousQuote().quote;
-                    break;
-                default:
-                    Console.WriteLine("Not a valid choice.");
-                    break;
-            }
-
-
-
-            while (lives > 0)
-            {
-                bool gameOver = PlayRound();
-                if (gameOver == true)
+                switch (choice)
                 {
-                    break;
+                    case "1":
+                        /// Movies game
+                        Console.WriteLine("You've chosen a quote from a movie!  One moment, please!");
+                        QuoteAnswer = QuoteRetriever.GetMovieQuote().quote.ToLower();
+                        DisplayWord = maskString(QuoteAnswer);
+                        pickedChoice = true;
+                        break;
+                    case "2":
+                        /// Famous
+                        Console.WriteLine("You've chosen someone famous!  One moment, please!");
+                        QuoteAnswer = QuoteRetriever.GetFamousQuote().quote.ToLower();
+                        DisplayWord = maskString(QuoteAnswer);
+                        pickedChoice = true;
+                        break;
+                    default:
+                        Console.WriteLine("Not a valid choice.  Please select 1 or 2.");
+                        choice = Console.ReadLine();
+                        break;
                 }
             }
-            if (lives > 0)
-            {
-                Console.WriteLine("Congratulations, you win!");
-            }
-            else
-            {
-                Console.WriteLine("Game over!");
-                Console.WriteLine("The answer was {0}", QuoteAnswer);
-            }
-            }
-
-        public static bool PlayRound()
-        {
-            Console.WriteLine("Enter a letter");
-            string letter = Console.ReadLine();
-
-            if (IsThereA(letter))
-            {
-                if (QuoteAnswer.ToLower() == DisplayWord.ToLower())
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                lives--;
-            }
-
-            return false;
+            return;
         }
 
-        static string maskString(string input)
+
+    static string maskString(string input)
         {
             string[] words = QuoteAnswer.Split(' ');
 
@@ -99,28 +129,56 @@ namespace QuoteHangman
                 DisplayWord += " ";
             }
 
+            DisplayWord = DisplayWord.TrimEnd( );
             return DisplayWord;
+            
         }
-    
 
 
+        public static bool PlayRound()
+        {
+            Console.WriteLine(DisplayWord);
+            Console.WriteLine("Enter a letter:");
+            string letter = Console.ReadLine();
+            string readletter = letter.ToLower();
+
+            if (IsThereA(letter))
+            {
+                
+            }
+            else
+            {
+                lives--;
+                Console.WriteLine("Oh no!  You've lost a life.  You have {0} left.", lives);
+            }
+            return false;
+        }
 
     public static bool IsThereA(string guessLetter) // Credit to DRapp for this
         {
-            bool anyMatch = false;
-            for (int i = 0; i < QuoteAnswer.Length; i++)
+            if (usedLetters.Contains(guessLetter) == false)
             {
-                if (QuoteAnswer.Substring(i, 1).Equals(guessLetter))
+                int maxlength = QuoteAnswer.Length;
+                bool anyMatch = false;
+                for (int i = 0; i < QuoteAnswer.Length; i++)
                 {
-                    anyMatch = true;
-                    DisplayWord = DisplayWord.Substring(0, i) + guessLetter + DisplayWord.Substring(i + 1);
+                    if (QuoteAnswer.Substring(i, 1).Equals(guessLetter))
+                    {
+                        anyMatch = true;
+                        DisplayWord = DisplayWord.Substring(0, i) + guessLetter + DisplayWord.Substring(i + 1);
+                    }
                 }
-                if (anyMatch == false)
-                {
-                    lives--;
-                }
+                usedLetters.Add(guessLetter);
+                return anyMatch;
+                
             }
-            return anyMatch;
+            if (usedLetters.Contains(guessLetter))
+                {
+                Console.WriteLine("Oh!  You have already used:");
+                usedLetters.ForEach(item => Console.Write(item + " "));
+                Console.WriteLine(" ");
+                }
+            return true;
         }
 
 

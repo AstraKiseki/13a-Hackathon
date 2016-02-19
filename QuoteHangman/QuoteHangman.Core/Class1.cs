@@ -14,6 +14,10 @@ namespace QuoteHangman.Core
     Also record repeated letters and tell them they have used that letter already and NOT record it as a list.
 
     I have nine misses to go.
+
+        The array is necessary now!
+
+        And how to do a win condition?
     */
     public class Class1
     {

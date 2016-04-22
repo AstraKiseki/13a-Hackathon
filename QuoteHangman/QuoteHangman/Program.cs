@@ -7,7 +7,7 @@ using QuoteHangman.Core.Services;
 
 namespace QuoteHangman
 {
-        public class Program
+    public class Program
     {
         static int lives = 9;
         static string QuoteAnswer = " ";
@@ -18,19 +18,19 @@ namespace QuoteHangman
         static void Main(string[] args)
         {
             GameStart();
-            
+
             while (lives >= 0)
             {
                 while (gameOver == true)
                 {
                     PlayRound();
                     if (DisplayWord.Equals(QuoteAnswer, StringComparison.OrdinalIgnoreCase))
-                {
-                    gameOver = false;
-                    if (lives > 0)
                     {
+                        gameOver = false;
+                        if (lives > 0)
+                        {
                             Console.WriteLine(QuoteAnswer);
-                        Console.WriteLine("Congratulations, you win!");
+                            Console.WriteLine("Congratulations, you win!");
                             Console.WriteLine("Would you like to play again? (Y/N)");
                             string playAgain = Console.ReadLine();
                             playAgain = playAgain.ToUpper();
@@ -58,17 +58,16 @@ namespace QuoteHangman
                                         break;
                                 }
                             }
+                        }
                     }
-                }
-                if (lives == 0)
-                {
-                    Console.WriteLine("Oh, you are out of lives!  That's game over!");
-                    Console.WriteLine("The answer was {0}", QuoteAnswer);
-                    Console.ReadLine();
+                    if (lives == 0)
+                    {
+                        Console.WriteLine("Oh, you are out of lives!  That's game over!");
+                        Console.WriteLine("The answer was {0}", QuoteAnswer);
+                        Console.ReadLine();
                         Console.Clear();
                         GameStart();
-                }
-
+                    }
                 }
             }
         }
@@ -110,30 +109,23 @@ namespace QuoteHangman
             return;
         }
 
-
-    static string maskString(string input)
+        static string maskString(string input)
         {
             string[] words = QuoteAnswer.Split(' ');
-
             string DisplayWord = "";
 
             for (int i = 0; i < words.Length; i++)
             {
                 string currentWord = words[i];
-
                 for (int j = 0; j < currentWord.Length; j++)
                 {
                     DisplayWord += "-";
                 }
-
                 DisplayWord += " ";
             }
-
-            DisplayWord = DisplayWord.TrimEnd( );
+            DisplayWord = DisplayWord.TrimEnd();
             return DisplayWord;
-            
         }
-
 
         public static bool PlayRound()
         {
@@ -144,7 +136,7 @@ namespace QuoteHangman
 
             if (IsThereA(letter))
             {
-                
+
             }
             else
             {
@@ -154,7 +146,7 @@ namespace QuoteHangman
             return false;
         }
 
-    public static bool IsThereA(string guessLetter) // Credit to DRapp for this
+        public static bool IsThereA(string guessLetter) // Credit to DRapp for this
         {
             if (usedLetters.Contains(guessLetter) == false)
             {
@@ -170,17 +162,15 @@ namespace QuoteHangman
                 }
                 usedLetters.Add(guessLetter);
                 return anyMatch;
-                
+
             }
             if (usedLetters.Contains(guessLetter))
-                {
+            {
                 Console.WriteLine("Oh!  You have already used:");
                 usedLetters.ForEach(item => Console.Write(item + " "));
                 Console.WriteLine(" ");
-                }
+            }
             return true;
         }
-
-
     }
 }

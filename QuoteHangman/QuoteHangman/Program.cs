@@ -9,11 +9,20 @@ namespace QuoteHangman
 {
     public class Program
     {
-        static int lives = 9;
-        static string QuoteAnswer = " ";
-        static string DisplayWord = " ";
-        static bool gameOver = true;
-        static List<string> usedLetters = new List<string>();
+            static int lives = 9;
+            static string QuoteAnswer = " ";
+            static string DisplayWord = " ";
+            static bool gameOver = true;
+            static List<string> usedLetters = new List<string>();
+
+        static void ClearData()
+        {
+            lives = 9;
+            QuoteAnswer = " ";
+            DisplayWord = " ";
+            gameOver = true;
+            usedLetters.Clear();
+        }
 
         static void Main(string[] args)
         {
@@ -43,6 +52,7 @@ namespace QuoteHangman
                                     case "Y":
                                         playAgainChoice = true;
                                         Console.Clear();
+                                        ClearData();
                                         GameStart();
                                         break;
                                     case "N":
@@ -66,6 +76,7 @@ namespace QuoteHangman
                         Console.WriteLine("The answer was {0}", QuoteAnswer);
                         Console.ReadLine();
                         Console.Clear();
+                        ClearData();
                         GameStart();
                     }
                 }

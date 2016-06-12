@@ -72,8 +72,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Domain\HangmanConstruct.cs" />
     <Compile Include="Domain\Quote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\QuoteRetriever.cs" />

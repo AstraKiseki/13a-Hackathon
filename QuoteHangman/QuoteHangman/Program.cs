@@ -14,6 +14,7 @@ namespace QuoteHangman
             static string DisplayWord = " ";
             static bool gameOver = true;
             static List<string> usedLetters = new List<string>();
+        // Creating the 'stats' needed.  Note that the gameOver boolean is reversed.  Maybe I should change it to gameOn?
 
         static void ClearData()
         {
@@ -23,6 +24,7 @@ namespace QuoteHangman
             gameOver = true;
             usedLetters.Clear();
         }
+        // To wipe the slate clean!
 
         static void Main(string[] args)
         {
@@ -127,14 +129,14 @@ namespace QuoteHangman
 
             for (int i = 0; i < words.Length; i++)
             {
-                string currentWord = words[i];
+                string currentWord = words[i]; // I need to figure out how to auto do the thing for things besides letters.
                 for (int j = 0; j < currentWord.Length; j++)
                 {
                     DisplayWord += "-";
                 }
                 DisplayWord += " ";
             }
-            DisplayWord = DisplayWord.TrimEnd();
+            DisplayWord = DisplayWord.TrimEnd();  // Or else the two won't look identical at all, due to that one extra space.
             return DisplayWord;
         }
 
@@ -143,7 +145,7 @@ namespace QuoteHangman
             Console.WriteLine(DisplayWord);
             Console.WriteLine("Enter a letter:");
             string letter = Console.ReadLine();
-            string readletter = letter.ToLower();
+            string readletter = letter.ToLower();  // Should I use Ordinal here too?
 
             if (IsThereA(letter))
             {
@@ -173,7 +175,6 @@ namespace QuoteHangman
                 }
                 usedLetters.Add(guessLetter);
                 return anyMatch;
-
             }
             if (usedLetters.Contains(guessLetter))
             {

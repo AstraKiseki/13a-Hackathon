@@ -130,9 +130,16 @@ namespace QuoteHangman
             for (int i = 0; i < words.Length; i++)
             {
                 string currentWord = words[i]; // I need to figure out how to auto do the thing for things besides letters.
+                char[] chars = currentWord.ToCharArray();
                 for (int j = 0; j < currentWord.Length; j++)
                 {
+                    if (Char.IsLetter(chars[j])) { 
                     DisplayWord += "-";
+                    }
+                    else
+                    {
+                        DisplayWord += chars[j];
+                    }
                 }
                 DisplayWord += " ";
             }
